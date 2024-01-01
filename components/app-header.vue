@@ -56,7 +56,7 @@
           </svg>
         </button>
         <div
-          class="absolute top-16 right-6"
+          class="absolute top-16 right-6 bg-color-white z-10"
           v-if="showCalendar"
         >
           <VDatePicker
