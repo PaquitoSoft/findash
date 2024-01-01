@@ -4,6 +4,7 @@ import { parse } from 'date-fns';
 import { TTransaction } from '~/types';
 import { saveTransaction } from '../dal/transaction';
 import { HttpError } from '~/utils/errors';
+import { resolveTransactionTypes } from '../dal/transaction-type';
 
 const ALLOWED_FILE_TYPES = ['application/vnd.ms-excel'];
 
@@ -16,7 +17,7 @@ function processRawTransaction(transactionData: unknown[]): Omit<TTransaction, '
     description: description as string,
     amount: amount as number,
     hash: hash.digest('hex'),
-    categories: [],
+    categoriesIds: [],
   };
 }
 
@@ -47,6 +48,8 @@ export default defineEventHandler(async (event) => {
   let importedTransactionsCount = 0;
   for (const incomingTransaction of processedTransactions) {
     try {
+      const transactionTypes = await resolveTransactionTypes(incomingTransaction.description);
+      incomingTransaction.categoriesIds = transactionTypes.map(type => type.id);
       await saveTransaction(incomingTransaction);
       importedTransactionsCount++;
     } catch (error) {

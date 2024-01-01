@@ -2,6 +2,7 @@ export type TTransactionCategory = {
   id: string;
   code: string;
   color: string;
+  tokens: string[];
 };
 
 export type TTransaction = {
@@ -10,7 +11,7 @@ export type TTransaction = {
   timestamp: number;
   amount: number;
   description: string;
-  categories: TTransactionCategory[];
+  categoriesIds: string[];
 }
 
 export type TFinancialRecord = {
@@ -18,7 +19,7 @@ export type TFinancialRecord = {
   timestamp: number;
   amount: number;
   description: string;
-  categories: TTransactionCategory[];
+  categories: Omit<TTransactionCategory, 'tokens'>[];
 };
 
 export type TMonthSummary = {

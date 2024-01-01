@@ -15,11 +15,7 @@ let _cachedTransactions: TDataSource | null;
 const read = async (): Promise<TDataSource> => {
   if (!_cachedTransactions) {
     const fileContents = await readFile(DATA_SOURCE_FILE_NAME, { encoding: 'utf8' });
-    try {
-      _cachedTransactions = JSON.parse(fileContents) as TDataSource;
-    } catch (error) {
-      console.log({ fileContents });
-    }
+    _cachedTransactions = JSON.parse(fileContents) as TDataSource;
   }
   return _cachedTransactions;
 };

@@ -40,6 +40,7 @@
     "uuid": "^9.0.1",
     "v-calendar": "^3.1.2",
     "vue-chartjs": "^5.3.0",
+    "vue-final-modal": "^4.5.3",
     "xlsx2json": "^1.0.0",
     "xslx": "^1.0.0",
     "zod": "^3.22.4"

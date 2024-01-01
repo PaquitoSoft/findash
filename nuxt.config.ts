@@ -5,6 +5,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ['trpc-nuxt'],
   },
+  css: ['vue-final-modal/style.css'],
   modules: ['@nuxtjs/tailwindcss', // [
   //   '@nuxtjs/eslint-module',
   //   {

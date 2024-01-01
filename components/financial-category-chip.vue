@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   import type { TTransactionCategory } from '~/types';
 
-  const props = defineProps<{ category: TTransactionCategory }>();
+  const props = defineProps<{ category: Omit<TTransactionCategory, 'tokens'> }>();
 
   const categoryColorMapping: Record<string, string> = {
     payment: 'green',
@@ -16,5 +16,6 @@
 </script>
 
 <template>
-  <span class="mr-2" :class="className">{{ $t('utilities.transactionTypes.' + category.code) }}</span>
+  <!-- <span class="mr-2" :class="className">{{ $t('utilities.transactionTypes.' + category.code) }}</span> -->
+  <span class="mr-2" :class="className">{{ category.code }}</span>
 </template>

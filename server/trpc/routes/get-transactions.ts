@@ -2,6 +2,12 @@ import { z } from 'zod';
 import { sub } from 'date-fns';
 import { publicProcedure } from '~/server/trpc/trpc';
 import { getTransactions } from '~/server/dal/transaction';
+import { TFinancialRecord } from '~/types';
+import { getTransactionTypesMap } from '~/server/dal/transaction-type';
+
+type TOutput = {
+  transactions: TFinancialRecord[];
+};
 
 export const getTransactionsProcedure = publicProcedure
     .input(
@@ -10,18 +16,25 @@ export const getTransactionsProcedure = publicProcedure
         endDate: z.string().optional(),
       }).optional(),
     )
-    .query(async ({ input }) => {
+    .query<TOutput>(async ({ input }) => {
       const startDate = input?.startDate ? new Date(input.startDate) : sub(new Date(), { months: 1 });
       const endDate = input?.endDate ? new Date(input.endDate) : new Date();
 
-      console.log('===> Transactions filter dates:', { startDate, endDate });
-
-      const transactions = await getTransactions({
-        startDate,
-        endDate,
-      });
+      const [transactions, typesMap] = await Promise.all([
+        getTransactions({
+          startDate,
+          endDate,
+        }),
+        getTransactionTypesMap(),
+      ]);
 
       return {
-        transactions
+        transactions: transactions.map(transaction => ({
+          id: transaction.id,
+          timestamp: transaction.timestamp,
+          amount: transaction.amount,
+          description: transaction.description,
+          categories: transaction.categoriesIds.map(categoryId => typesMap[categoryId]),
+        }))
       };
     });
