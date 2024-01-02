@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { sub as substractDate } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
-import { TMonthSummary, TTransaction } from '~/types';
+import { TFinancialRecord, TMonthSummary, TTransaction } from '~/types';
 
 const DATA_SOURCE_FILE_NAME = './data/transactions.json';
 type TDataSource = Record<string, TTransaction>;
@@ -54,6 +54,26 @@ export const saveTransaction = async (transaction: Omit<TTransaction, 'id'>): Pr
   await write(data);
 
   return newTransaction;
+};
+
+export const updateTransaction = async (transaction: TFinancialRecord): Promise<TTransaction> => {
+  const data = await read();
+
+  if (!data[transaction.id]) {
+    throw new Error('Transaction to be updated does not exist.');
+  }
+
+  data[transaction.id] = {
+    ...data[transaction.id],
+    timestamp: transaction.timestamp,
+    amount: transaction.amount,
+    description: transaction.description,
+    categoriesIds: transaction.categories.map(category => category.id),
+  };
+
+  await write(data);
+
+  return data[transaction.id];
 };
 
 const getMonthSummary = async (monthDate: Date): Promise<TMonthSummary> => {

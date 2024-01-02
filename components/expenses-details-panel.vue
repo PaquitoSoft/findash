@@ -2,12 +2,17 @@
   // import type { TFinancialRecord } from '~/types';
 
   import { useTransactionsStore } from '~/stores/transactions';
+  import type { TFinancialRecord } from '~/types';
 
   // type TProps = {
   //   totalAmount: number;
   //   transactions: TFinancialRecord[];
   // };
   const transactionsStore = useTransactionsStore();
+
+  const updateTransaction = (transaction: TFinancialRecord) => {
+    transactionsStore.updateTransaction(transaction);
+  };
 
   // defineProps<TProps>();
 </script>
@@ -54,7 +59,10 @@
       <div class="p-6">
         <FilterByCategoryControl />
         <div class="relative w-full overflow-auto mt-8">
-          <FinancialRecordsTable :records="transactionsStore.transactions"/>
+          <FinancialRecordsTable
+            :records="transactionsStore.transactions"
+            @transaction-categories-updated="updateTransaction"
+          />
         </div>
       </div>
     </div>

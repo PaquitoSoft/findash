@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { sub } from 'date-fns';
 import type { TFinancialRecord } from '~/types';
+// import { getQueryKey } from 'trpc-nuxt/client';
 
 const START_DATE_STORAGE_KEY = '_tf-sd';
 const END_DATE_STORAGE_KEY = '_tf-ed';
@@ -59,11 +60,19 @@ export const useTransactionsStore = defineStore('transactionsStore', {
 
       this.transactions = data.value?.transactions || [];
     },
+    async updateTransaction(transaction: TFinancialRecord) {
+      const { $trpcClient } = useNuxtApp();
+      const originalTransactionIndex = this.transactions.findIndex(_transaction => _transaction.id === transaction.id);
+
+      if (originalTransactionIndex !== -1) {
+        this.transactions[originalTransactionIndex] = transaction;
+        await $trpcClient.updateTransaction.mutate(transaction);
+      }
+    },
     updateFilters(dates: { startDate: Date, endDate: Date }) {
       this.filters = dates;
       this.fetch();
       executeOnIdle(() => writeFilters(dates));
-      console.log('Filters updated:', { dates });
     }
   }
 });

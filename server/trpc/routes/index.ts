@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { lastMonthsSumaryProcedure } from './last-months-summary';
 import { getTransactionsProcedure } from './get-transactions';
 import { getTransactionTypesProcedure } from './get-transaction-types';
+import { updateTransactionProcedure } from './update-transaction';
 
 export const appRouter = router({
   hello: publicProcedure
@@ -20,6 +21,7 @@ export const appRouter = router({
   lastMonthsSumary: lastMonthsSumaryProcedure,
   getTransactions: getTransactionsProcedure,
   getTransactionTypes: getTransactionTypesProcedure,
+  updateTransaction: updateTransactionProcedure,
 });
 
 // export only the type definition of the API

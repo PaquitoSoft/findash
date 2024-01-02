@@ -48,6 +48,7 @@ module.exports = {
       "error",
       "always"
     ],
-    "vue/multi-word-component-names": "off"
+    "vue/multi-word-component-names": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
   }
 };
