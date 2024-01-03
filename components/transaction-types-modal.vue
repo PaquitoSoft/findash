@@ -44,8 +44,8 @@
     </header>
     <main class="py-4">
       <div>
-        <h2>Assigned categories</h2>
-        <div>
+        <h2 class="mb-2">Assigned categories</h2>
+        <div class="flex flex-wrap gap-2">
           <FinancialCategoryChip
             v-for="category in localTransaction.categories"
             :key="category.id"
@@ -55,8 +55,8 @@
         </div>
       </div>
       <div class="mt-4">
-        <h2>Available categories</h2>
-        <div>
+        <h2 class="mb-2">Available categories</h2>
+        <div class="flex flex-wrap gap-2">
           <FinancialCategoryChip
             v-for="category in availableCategories"
             :key="category.id"
