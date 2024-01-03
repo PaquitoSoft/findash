@@ -8,6 +8,7 @@ type TDataSource = Record<string, TTransaction>;
 type TGetTransactionsParams = {
   startDate?: Date;
   endDate?: Date;
+  transactionTypesIds?: string[];
 };
 
 let _cachedTransactions: TDataSource | null;
@@ -33,7 +34,9 @@ export const getTransactions = async (params: TGetTransactionsParams = {}): Prom
   const endDate = params.endDate ? new Date(params.endDate) : new Date();
 
   return allTransactions.filter(transaction =>
-    startDate.getTime() < transaction.timestamp && transaction.timestamp < endDate.getTime()
+    startDate.getTime() < transaction.timestamp &&
+    transaction.timestamp < endDate.getTime() &&
+    (!params.transactionTypesIds || params.transactionTypesIds.length < 1 || transaction.categoriesIds.some((id) => params.transactionTypesIds?.includes(id)))
   );
 };
 

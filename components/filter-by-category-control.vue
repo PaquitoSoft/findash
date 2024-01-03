@@ -1,9 +1,11 @@
 <script lang="ts" setup>
   import { ref } from 'vue';
   import { useNuxtApp } from 'nuxt/app';
+  import { useTransactionsStore } from '~/stores/transactions';
   import type { TTransactionCategory } from '~/types';
 
   const { $trpcClient } = useNuxtApp();
+  const transactionsStore = useTransactionsStore();
   const { data: allTransactionCategories } = await $trpcClient.getTransactionTypes.useQuery();
 
   const availableCategories = ref(allTransactionCategories.value?.types || []);
@@ -16,6 +18,9 @@
     } else {
       selectedCategoriesIds.value.push(category.id);
     }
+    transactionsStore.updateFilters({
+      categoriesIds: selectedCategoriesIds.value
+    });
   };
 </script>
 

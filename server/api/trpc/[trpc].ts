@@ -7,7 +7,7 @@ export default createNuxtApiHandler({
   router: appRouter,
   createContext,
   responseMeta: (options) => {
-    console.log('===> responseMeta#', { options });
+    // console.log('===> responseMeta#', { options });
 
     if (options.paths?.[0] === 'getTransactionTypes') {
       return {
