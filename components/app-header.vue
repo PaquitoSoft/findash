@@ -22,6 +22,13 @@
     });
     toggleCalendar();
   };
+
+  transactionsStore.$subscribe((_mutation, state) => {
+    dates.value = {
+      start: state.filters.startDate,
+      end: state.filters.endDate,
+    };
+  });
 </script>
 
 <template>
