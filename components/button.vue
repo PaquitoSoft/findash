@@ -17,9 +17,9 @@
 const customClasses = computed(() => ({
   'rounded-md': props.shape === 'square',
   'rounded-full': props.shape === 'circle',
-  'h-6 w-6': props.size === 'small',
-  'h-10 w-10': props.size === 'medium',
-  'h-14 w-14': props.size === 'large',
+  'px-2 py-1': props.size === 'small',
+  'px-4 py-2': props.size === 'medium',
+  'px-6 py-4': props.size === 'large',
 }));
 </script>
 
