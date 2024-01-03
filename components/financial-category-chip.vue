@@ -1,33 +1,33 @@
 <script lang="ts" setup>
+  import { computed } from 'vue';
   import type { TTransactionCategory } from '~/types';
 
   const props = defineProps<{
     category: Omit<TTransactionCategory, 'tokens'>;
+    isDisabled?: boolean;
+    isHighlighted?: boolean;
     onClick?: (category: Omit<TTransactionCategory, 'tokens'>) => void;
   }>();
 
-  const categoryColorMapping: Record<string, string> = {
-    payment: 'green',
-    deposit: 'blue',
-    withdrawal: 'pink',
-    invoice: 'amber',
-    default: 'grey',
-  };
-
-  const categoryColor = categoryColorMapping[props.category.code] || categoryColorMapping.default;
-  const customClasses = {
-    [`bg-${categoryColor}-100`]: true,
-    [`text-${categoryColor}-800`]: true,
+  const customClasses = computed(() => ({
     'cursor-pointer': !!props.onClick,
-  };
+    'opacity-60': props.isDisabled,
+    'border': props.isHighlighted,
+  }));
+  const customStyles = computed(() => ({
+    'color': props.category.color.replace('<alpha>', '1'),
+    'borderColor': props.category.color.replace('<alpha>', '1'),
+    'backgroundColor': props.category.color.replace('<alpha>', '0.1'),
+  }));
   const clickHandler = () => props.onClick && props.onClick(props.category);
 </script>
 
 <template>
   <!-- <span class="mr-2" :class="className">{{ $t('utilities.transactionTypes.' + category.code) }}</span> -->
   <span
-    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium"
+    class="px-2.5 py-1 rounded-full text-sm font-medium"
     :class="customClasses"
+    :style="customStyles"
     @click="clickHandler"
   >{{ category.code }}</span>
 </template>
